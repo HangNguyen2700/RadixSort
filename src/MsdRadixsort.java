@@ -27,52 +27,13 @@ public class MsdRadixsort {
         return (int) (number / Math.pow(10, b)) % 10;
     }
 
-//    public static void msdRadix(int[] data, int l, int r, int b) {
-//        if (r <= l) {
-//            return;
-//        }
-//
-////        if (r - l < 32){
-////            insertionSort(data);
-////            return;
-////        }
-//
-//        int[] count = new int[11];
-//        int[] result = new int[data.length];
-//
-//        for (int i = l; i < r+1; i++) {
-//            count[bthComponent(data[i], b)]++;
-//        }
-//
-//        for (int i = 1; i < count.length; i++) {
-//            count[i] += count[i-1];
-//        }
-//
-//        System.out.println("count: " + Arrays.toString(count));
-//
-////        System.out.println(result.length);
-////        System.out.println(count[bthComponent(data[0], b)]-1);
-//
-//        for (int i = l; i < r+1; i++) { //hab mehrmals probiert, weiss nicht warum es geht :)))
-//            result[(result.length ) - (count[bthComponent(data[i], b)]-1)] = data[i];
-//            count[bthComponent(data[i], b)]--;
-//        }
-//
-//        for (int i = l; i <= r; i++) {
-//            if(result[i]!=0) data[i] = result[i];
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//            msdRadix(data, l + count[i], l + count[i+1] - 1, b - 1);
-//        }
-//    }
-
     public static void msdRadix(int[] data, int l, int r, int b) {
         if (l >= r) {
             return;
         }
 
         int[] count = new int[11];
+        int[] count2 = new int[11];
         int[] temp = new int[r - l + 1];
 
         for (int i = l; i < r + 1; i++) {
@@ -83,6 +44,10 @@ public class MsdRadixsort {
             count[i] += count[i - 1];
         }
 
+        for (int i = 0; i < count2.length; i++) {
+            count2[i]=count[i];
+        }
+
         System.out.println("count: " + Arrays.toString(count));
 
         for (int i = l; i < r + 1; i++) {
@@ -91,14 +56,18 @@ public class MsdRadixsort {
         }
 
         for (int i = l; i < r + 1; i++) {
-            data[i] = temp[i - l];
+            int j = 0;
+            if(j<temp.length){
+                data[i] = temp[j];
+                j++;
+            }
         }
 
         for (int i = 0; i < count.length-1; i++) {
 //            if (i == 0) {
 //                msdRadix(data, l + count[i], l + count[i + 1], b - 1);
 //            } else {
-                msdRadix(data, l + data.length-1 - count[i+1], l + data.length-1 - count[i] -1, b - 1);
+                msdRadix(data, data.length - l - count2[i], data.length-1 - l - count[i], b - 1);
 //            }
         }
     }
